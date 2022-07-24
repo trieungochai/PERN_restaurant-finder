@@ -31,13 +31,11 @@ const createRestaurant = async (req, res) => {
 const getAllRestaurants = async (req, res) => {
   try {
     const restaurants = await pool.query("SELECT * FROM restaurants");
-    return res
-      .status(200)
-      .json({
-        success: true,
-        length: restaurants.rows.length,
-        restaurants: restaurants.rows,
-      });
+    return res.status(200).json({
+      success: true,
+      length: restaurants.rows.length,
+      restaurants: restaurants.rows,
+    });
   } catch (error) {
     console.log(error.message);
     return res
@@ -46,4 +44,21 @@ const getAllRestaurants = async (req, res) => {
   }
 };
 
-module.exports = { createRestaurant, getAllRestaurants };
+const getSingleRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const restaurant = await pool.query(
+      "SELECT * FROM restaurants WHERE id = $1",
+      [id]
+    );
+
+    return res.status(200).json({ success: true, restaurant: restaurant.rows });
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+module.exports = { createRestaurant, getAllRestaurants, getSingleRestaurant };
