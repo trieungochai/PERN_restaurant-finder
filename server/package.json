@@ -8,7 +8,7 @@
     "nodemon": "^2.0.19"
   },
   "scripts": {
-    "server": "nodemon server"
+    "server": "nodemon index"
   },
   "name": "server",
   "version": "1.0.0",
